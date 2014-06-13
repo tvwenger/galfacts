@@ -21,7 +21,7 @@ def main(**options):
     print("make_clusters.py {0}".format(vers))
     # Analysis will be done in each bin individually
     my_dir = "{0}/{1}/{2}/beam{3}".\
-      format(options["results_filepath"],
+      format(options["source_filepath"],
              options["field"],
              options["dates"][0],
              options["beams"][0])
@@ -39,7 +39,7 @@ def main(**options):
                 if options["verbose"]:
                     print("Log: Working on beam {0}".format(beam))
                 my_in_dir = "{0}/{1}/{2}/beam{3}/{4}".format(
-                    options["results_filepath"],
+                    options["source_filepath"],
                     options["field"],date,beam,this_bin)
                 if not os.path.isdir(my_in_dir):
                     continue
@@ -60,8 +60,8 @@ def main(**options):
         RA = np.float64(np.array([s.center_RA for s in sources]))
         DEC = np.float64(np.array([s.center_DEC for s in sources]))
         I_data = [s.center_I for s in sources]
-        my_out_dir = "{0}/{1}/clusters/{2}".\
-          format(options["results_filepath"],
+        my_out_dir = "{0}/{1}/{2}".\
+          format(options["cluster_filepath"],
                  options["field"],this_bin)
         if not os.path.isdir(my_out_dir):
             os.makedirs(my_out_dir)
@@ -160,9 +160,12 @@ if __name__ == "__main__":
                           help="dates to cluster",
                           required=True)
     semi_opt=parser.add_argument_group('arguments set to defaults:')
-    semi_opt.add_argument('--results_filepath',type=str,
-                          help='path where results are saved',
+    semi_opt.add_argument('--source_filepath',type=str,
+                          help='path where sources are saved',
                           default="../results")
+    semi_opt.add_argument('--cluster_filepath',type=str,
+                          help='path where cluster results will go',
+                          default="../results/clusters")
     semi_opt.add_argument('--beams',type=int,nargs="+",
                           help='beams to cluster',
                           default=[0,1,2,3,4,5,6])

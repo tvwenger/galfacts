@@ -3,6 +3,7 @@ channel.py
 Channel object for GALFACTS transient search
 02 June 2014 - Trey Wenger - creation
 """
+import os
 import sys
 import numpy as np
 
@@ -18,7 +19,7 @@ class Channel(object):
                  chan_num)
         ra,dec,ast,I,Q,U,V = np.loadtxt(self.chan_file,unpack=True)
         self.num_points = len(ra)
-        self.error = False
+        self.error = (not os.path.isfile(self.chan_file))
 
     def average(self):
         """Return the average Stokes for this channel"""
